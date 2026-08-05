@@ -28,3 +28,4 @@ A web and mobile application for managing projects, tasks, deadlines, and team c
 
 ### Development Tools
 - Visual Studio Code
+  
