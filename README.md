@@ -27,4 +27,9 @@ A web and mobile application for managing projects, tasks, deadlines, and team c
 - GitHub
 
 ### Development Tools
+<<<<<<< HEAD
 - Visual Studio Code
+=======
+- Visual Studio Code
+  
+>>>>>>> db9af54b8974cbc01cd6c027bb639261361eb502
