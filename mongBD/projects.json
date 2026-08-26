@@ -1,0 +1,36 @@
+[
+    {
+        "_id": {
+            "$oid": "68a9f2000000000000000001"
+        },
+        "title": "E-Commerce Application",
+        "description": "Development of a modern e-commerce web application.",
+        "status": "in-progress",
+        "startDate": {
+            "$date": "2026-08-01T00:00:00Z"
+        },
+        "endDate": {
+            "$date": "2026-10-30T00:00:00Z"
+        },
+        "ownerId": {
+            "$oid": "68a9f1000000000000000001"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68a9f2000000000000000002"
+        },
+        "title": "Travel Planning App",
+        "description": "A travel planning and booking platform.",
+        "status": "planning",
+        "startDate": {
+            "$date": "2026-08-10T00:00:00Z"
+        },
+        "endDate": {
+            "$date": "2026-12-15T00:00:00Z"
+        },
+        "ownerId": {
+            "$oid": "68a9f1000000000000000002"
+        }
+    }
+]

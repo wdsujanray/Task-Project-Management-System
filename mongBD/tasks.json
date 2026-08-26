@@ -1,0 +1,56 @@
+[
+    {
+        "_id": {
+            "$oid": "68a9f3000000000000000001"
+        },
+        "title": "Design Login Page",
+        "description": "Create responsive UI for the login and registration pages.",
+        "priority": "high",
+        "status": "completed",
+        "dueDate": {
+            "$date": "2026-08-15T00:00:00Z"
+        },
+        "projectId": {
+            "$oid": "68a9f2000000000000000001"
+        },
+        "assignedTo": {
+            "$oid": "68a9f1000000000000000003"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68a9f3000000000000000002"
+        },
+        "title": "Create Product API",
+        "description": "Develop REST APIs for product management.",
+        "priority": "high",
+        "status": "in-progress",
+        "dueDate": {
+            "$date": "2026-08-25T00:00:00Z"
+        },
+        "projectId": {
+            "$oid": "68a9f2000000000000000001"
+        },
+        "assignedTo": {
+            "$oid": "68a9f1000000000000000002"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68a9f3000000000000000003"
+        },
+        "title": "Research Travel Features",
+        "description": "Research important features for the travel planning application.",
+        "priority": "medium",
+        "status": "pending",
+        "dueDate": {
+            "$date": "2026-08-30T00:00:00Z"
+        },
+        "projectId": {
+            "$oid": "68a9f2000000000000000002"
+        },
+        "assignedTo": {
+            "$oid": "68a9f1000000000000000001"
+        }
+    }
+]

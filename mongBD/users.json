@@ -1,0 +1,41 @@
+[
+    {
+        "_id": {
+            "$oid": "68a9f1000000000000000001"
+        },
+        "name": "Sujan Chandra Ray",
+        "email": "sujan@example.com",
+        "password": "hashed_password_123",
+        "role": "admin",
+        "profileImage": "https://example.com/images/sujan.jpg",
+        "createdAt": {
+            "$date": "2026-08-01T10:00:00Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68a9f1000000000000000002"
+        },
+        "name": "Rahul Sharma",
+        "email": "rahul@example.com",
+        "password": "hashed_password_456",
+        "role": "manager",
+        "profileImage": "https://example.com/images/rahul.jpg",
+        "createdAt": {
+            "$date": "2026-08-02T10:00:00Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68a9f1000000000000000003"
+        },
+        "name": "Priya Das",
+        "email": "priya@example.com",
+        "password": "hashed_password_789",
+        "role": "developer",
+        "profileImage": "https://example.com/images/priya.jpg",
+        "createdAt": {
+            "$date": "2026-08-03T10:00:00Z"
+        }
+    }
+]

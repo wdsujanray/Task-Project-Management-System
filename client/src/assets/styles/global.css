@@ -1,0 +1,365 @@
+@import "./variables.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+p {
+  margin: 0 0 1rem;
+  color: var(--muted-text);
+}
+
+.eyebrow {
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.container {
+  width: min(var(--container-width), calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem 0 4rem;
+}
+
+.navbar {
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+}
+
+.navbar-inner,
+.footer-inner,
+.auth-layout-inner,
+.home-hero-inner,
+.dashboard-grid,
+.feature-grid,
+.profile-grid,
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.navbar-inner {
+  width: min(var(--container-width), calc(100% - 2rem));
+  margin: 0 auto;
+  min-height: 72px;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: var(--muted-text);
+  font-weight: 600;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary-color);
+  color: #fff;
+  padding: 0.8rem 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.btn.secondary:hover {
+  background: #eff6ff;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+}
+
+.home-page,
+.dashboard-page,
+.profile-page,
+.login-page,
+.not-found-page {
+  width: min(var(--container-width), calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.home-hero {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(148, 163, 184, 0.08));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.home-hero-inner {
+  align-items: center;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-content h1 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.05rem;
+  max-width: 600px;
+}
+
+.hero-visual {
+  min-width: 260px;
+  min-height: 220px;
+  background: linear-gradient(135deg, #cfe0ff, #edf4ff);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  display: grid;
+  place-items: center;
+  font-size: 4rem;
+}
+
+.section-title {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: clamp(1.8rem, 2vw, 2.5rem);
+}
+
+.feature-grid,
+.dashboard-grid,
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.dashboard-grid {
+  margin-top: 1.5rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.login-panel {
+  max-width: 520px;
+  margin: 2rem auto 0;
+  padding: 2rem;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.form-group input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem 0.9rem;
+  background: #fff;
+}
+
+.auth-layout {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
+}
+
+.auth-layout-inner {
+  width: min(100%, 520px);
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--surface-color);
+  border-right: 1px solid var(--border-color);
+  min-height: 100%;
+  padding: 1.5rem;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sidebar-list a {
+  display: block;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  color: var(--muted-text);
+  font-weight: 600;
+}
+
+.sidebar-list a:hover {
+  background: #eff6ff;
+  color: var(--primary-color);
+}
+
+.footer {
+  background: #0f172a;
+  color: #e2e8f0;
+  margin-top: auto;
+}
+
+.footer-inner {
+  width: min(var(--container-width), calc(100% - 2rem));
+  margin: 0 auto;
+  min-height: 72px;
+  justify-content: space-between;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(37, 99, 235, 0.15);
+  border-left-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin: 1rem auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-hero-inner,
+  .navbar-inner,
+  .footer-inner,
+  .feature-grid,
+  .dashboard-grid,
+  .profile-grid {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .feature-grid,
+  .dashboard-grid,
+  .profile-grid {
+    display: grid;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .main-content {
+    padding-top: 1.5rem;
+  }
+}
