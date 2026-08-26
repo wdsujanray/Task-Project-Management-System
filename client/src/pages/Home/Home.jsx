@@ -1,5 +1,5 @@
-import Card from "../../components/common/Card";
-import Button from "../../components/common/Button";
+import Card from "../../components/ui/Card";
+import Button from "../../components/ui/Button";
 
 function Home() {
   return (
