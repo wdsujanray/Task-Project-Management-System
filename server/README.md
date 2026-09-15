@@ -1,4 +1,22 @@
-# React + Vite
+# Task & Project Management API
+
+Express API backed by MongoDB for users, projects, and tasks.
+
+## Run
+
+```powershell
+npm install
+$env:MONGODB_URI="mongodb://localhost:27017/"
+$env:MONGODB_DB="users"
+$env:AUTH_SECRET="replace-with-a-long-random-secret"
+npm run dev
+```
+
+The API uses the existing `users` database and its existing `users`, `projects`, `tasks`, `teams`, and `notifications` collections. It does not create a `task_project_management` database or collection. Set `MONGODB_DB` to your actual existing database name if `users` is the collection/database label rather than the database name.
+
+The API runs at `http://localhost:5000`. The Vite client uses that URL by default; set `VITE_API_URL` when MongoDB API is hosted elsewhere.
+
+Authentication endpoints are `POST /api/auth/register`, `POST /api/auth/login`, and `GET /api/auth/profile`. Project and task endpoints require the returned bearer token.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

@@ -20,6 +20,7 @@
 .footer-inner {
   display: flex;
   width: min(var(--container-width), calc(100% - 2rem));
+  max-width: 100%;
   min-height: 72px;
   margin-inline: auto;
   align-items: center;
@@ -28,14 +29,30 @@
 }
 
 .brand {
+  display: inline-flex;
   flex: 0 1 auto;
-  color: var(--primary-color);
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  font-weight: 700;
+  width: 10.5rem;
+  height: 3rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  background: transparent;
+  line-height: 0;
+}
+
+.brand img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .nav-links {
   display: flex;
+  min-width: 0;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
@@ -81,6 +98,7 @@
 .profile-page,
 .login-page,
 .not-found-page {
+  min-width: 0;
   width: min(var(--container-width), calc(100% - 2rem));
   margin-inline: auto;
 }

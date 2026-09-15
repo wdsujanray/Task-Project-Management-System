@@ -13,8 +13,22 @@
     gap: 0.15rem;
   }
 
+  .home-hero-inner {
+    gap: 1.5rem;
+  }
+
+  .feature-grid,
+  .dashboard-grid,
+  .profile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .dashboard-sections {
     gap: 1rem;
+  }
+
+  .profile-settings {
+    gap: 1.25rem;
   }
 }
 
@@ -26,6 +40,16 @@
   .navbar-inner {
     position: relative;
     min-height: 64px;
+  }
+
+  .brand img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .brand {
+    width: min(9rem, 58vw);
+    height: 2.5rem;
   }
 
   .nav-menu-toggle {
@@ -62,6 +86,95 @@
     grid-template-columns: 1fr;
   }
 
+  .dashboard-actions {
+    margin-bottom: 1rem;
+  }
+
+  .inline-notification {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: calc(100% - 1.5rem);
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .task-counter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .task-counter-actions {
+    justify-content: stretch;
+  }
+
+  .task-counter-actions .btn {
+    flex: 1 1 8rem;
+  }
+
+  .work-form-row {
+    flex-direction: column;
+  }
+
+  .work-form > .btn {
+    width: 100%;
+  }
+
+  .date-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-list li > select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .item-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .item-actions .btn {
+    flex: 1 1 6rem;
+  }
+
+  .deadline-extension input,
+  .deadline-extension .btn {
+    width: 100%;
+  }
+
+  .dashboard-list li,
+  .setting-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .auth-layout {
+    padding: 1rem 0.75rem;
+  }
+
+  .auth-page {
+    min-height: auto;
+  }
+
+  .profile-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-settings {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .profile-activity {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-avatar {
+    margin-inline: auto;
+  }
+
   .hero-visual {
     min-height: 150px;
   }
@@ -88,11 +201,24 @@
 
   .home-hero,
   .card,
-  .login-panel {
+  .login-panel,
+  .auth-panel {
     padding: 1rem;
+  }
+
+  .password-field input {
+    padding-right: 3.25rem;
   }
 
   .btn {
     width: 100%;
+  }
+
+  .not-found-actions .btn {
+    width: 100%;
+  }
+
+  .not-found-actions {
+    flex-direction: column;
   }
 }

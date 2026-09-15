@@ -1,17 +1,20 @@
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
+import PageTitle from "../../components/ui/PageTitle";
+import WelcomeMessage from "../../components/ui/WelcomeMessage";
 
 function Home() {
+  const projectName = "Task & Project Management System";
+
   return (
     <div className="home-page">
       <section className="home-hero">
         <div className="home-hero-inner">
           <div className="hero-content">
-            <p className="eyebrow">Smart workflow</p>
-            <h1>Task & Project Management System</h1>
+            <PageTitle title={projectName} subtitle="Plan work, manage teams, and track progress from one clean and powerful workspace." />
+            <WelcomeMessage name="Project Manager" projectName={projectName} />
             <p>
-              Plan work, manage teams, and track progress from one clean and
-              powerful workspace.
+              Organize every milestone with a clear view of your team's work.
             </p>
             <Button>Get Started</Button>
           </div>
@@ -26,20 +29,9 @@ function Home() {
         <h2 className="section-title">Core Features</h2>
 
         <div className="feature-grid">
-          <Card>
-            <h3>Task Tracking</h3>
-            <p>Create, organize, and monitor tasks in a structured workflow.</p>
-          </Card>
-
-          <Card>
-            <h3>Project Planning</h3>
-            <p>Keep project milestones, goals, and team responsibilities visible.</p>
-          </Card>
-
-          <Card>
-            <h3>Team Visibility</h3>
-            <p>Review priorities and progress to keep everyone aligned.</p>
-          </Card>
+          <Card title="Task Tracking" description="Create, organize, and monitor tasks in a structured workflow." />
+          <Card title="Project Planning" description="Keep project milestones, goals, and team responsibilities visible." />
+          <Card title="Team Visibility" description="Review priorities and progress to keep everyone aligned." />
         </div>
       </section>
     </div>

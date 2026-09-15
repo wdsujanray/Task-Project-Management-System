@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import Button from "../../components/common/Button";
+import Button from "../../components/ui/Button";
+import { registerUser } from "../../services/api";
 
 function Register() {
   const navigate = useNavigate();
@@ -9,28 +10,37 @@ function Register() {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const user = {
-      name: formData.name || "New User",
-      email: formData.email || "user@example.com",
-      password: formData.password || "",
-    };
-
-    localStorage.setItem("taskflowUser", JSON.stringify(user));
-    navigate("/profile", { replace: true });
+    setError("");
+    setIsSubmitting(true);
+    try {
+      const { token, user } = await registerUser(formData);
+      localStorage.setItem("taskflowToken", token);
+      localStorage.setItem("taskflowUser", JSON.stringify(user));
+      localStorage.setItem("taskflowSession", JSON.stringify({ email: user.email, loggedIn: true }));
+      navigate("/profile", { replace: true });
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-panel">
+    <div className="auth-page register-page">
+      <div className="auth-panel">
+        <div className="auth-icon" aria-hidden="true">+</div>
+        <p className="eyebrow">Start organized</p>
         <h1>Create Account</h1>
         <p>Register to manage your tasks and project workspace.</p>
 
@@ -63,18 +73,31 @@ function Register() {
 
           <div className="form-group">
             <label htmlFor="register-password">Password</label>
-            <input
-              id="register-password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Create a password"
-              required
-            />
+            <div className="password-field">
+              <input
+                id="register-password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((visible) => !visible)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                <span className="password-emoji" aria-hidden="true">{showPassword ? "🙈" : "👁️"}</span>
+              </button>
+            </div>
           </div>
 
-          <Button type="submit" className="full-width">Register</Button>
+          {error && <p className="form-error" role="alert">{error}</p>}
+          <Button type="submit" className="full-width auth-submit register-submit" disabled={isSubmitting}>{isSubmitting ? "Creating account..." : "Register"}</Button>
         </form>
 
         <p className="auth-switch">
