@@ -8,6 +8,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Profile from "../pages/Profile/Profile";
+import CreateTask from "../pages/CreateTask/CreateTask";
 import NotFound from "../pages/NotFound/NotFound";
 
 function ProtectedRoute({ children }) {
@@ -24,6 +25,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/create-task" element={<ProtectedRoute><CreateTask /></ProtectedRoute>} />
       </Route>
 
       <Route element={<AuthLayout />}>

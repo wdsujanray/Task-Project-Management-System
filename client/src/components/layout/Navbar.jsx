@@ -62,6 +62,11 @@ function Navbar() {
           <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
             Dashboard
           </NavLink>
+          {isLoggedIn && (
+            <NavLink to="/create-task" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+              Create Task
+            </NavLink>
+          )}
           <NavLink to="/profile" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
             Profile
           </NavLink>
