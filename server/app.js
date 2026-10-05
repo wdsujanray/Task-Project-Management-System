@@ -1,3 +1,4 @@
+const connectDB = require('./config/db');
 const express = require('express');
 const cors = require('cors');
 const { ObjectId } = require('mongodb');
@@ -6,12 +7,13 @@ const { createToken, getUserIdFromToken, hashPassword, publicUser, verifyPasswor
 const requestLogger = require('./middleware/requestLogger');
 const projectRoutes = require('./routes/projectRoutes');
 const testRoutes = require('./routes/testRoutes');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
 app.use(cors());
-app.use(express.json());
 app.use(requestLogger);
+app.use(express.json());
 app.use('/api/test', testRoutes);
 app.use('/api/projects', projectRoutes);
 
@@ -32,7 +34,8 @@ app.use(async (req, res, next) => {
     await connectDatabase();
     next();
   } catch (error) {
-    res.status(503).json({ message: 'MongoDB is unavailable', detail: error.message });
+    console.error(error);
+    res.status(503).json({ message: 'MongoDB is unavailable' });
   }
 });
 
@@ -167,5 +170,13 @@ app.delete('/api/projects/:id', requireUser, async (req, res) => {
 
   res.json({ message: 'Project deleted successfully' });
 });
+
+app.use((req, res, next) => {
+  const error = new Error('Route not found');
+  error.status = 404;
+  next(error);
+});
+
+app.use(errorHandler);
 
 module.exports = app;
