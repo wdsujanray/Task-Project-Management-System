@@ -16,6 +16,10 @@ The API uses the existing `users` database and its existing `users`, `projects`,
 
 The API runs at `http://localhost:5000`. The Vite client uses that URL by default; set `VITE_API_URL` when MongoDB API is hosted elsewhere.
 
+## Backend test route
+
+Run `npm run dev` from `server/`, then request `http://localhost:5000/api/test`. This route returns a JSON confirmation and does not require a MongoDB connection.
+
 Authentication endpoints are `POST /api/auth/register`, `POST /api/auth/login`, and `GET /api/auth/profile`. Project and task endpoints require the returned bearer token.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

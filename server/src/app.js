@@ -3,11 +3,13 @@ const cors = require('cors');
 const { ObjectId } = require('mongodb');
 const { connectDatabase, getDatabase } = require('./db');
 const { createToken, getUserIdFromToken, hashPassword, publicUser, verifyPassword } = require('./auth');
+const testRoutes = require('./routes/testRoutes');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/test', testRoutes);
 
 function requireUser(req, res, next) {
   try {
@@ -21,7 +23,7 @@ function requireUser(req, res, next) {
 }
 
 app.use(async (req, res, next) => {
-  if (req.path === '/api/health') return next();
+  if (req.path === '/api/health' || req.path === '/api/test') return next();
   try {
     await connectDatabase();
     next();
