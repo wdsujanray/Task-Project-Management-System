@@ -2,10 +2,10 @@
   "name": "task-project-management-server",
   "version": "1.0.0",
   "description": "Express and MongoDB API for the task and project management system",
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node src/server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

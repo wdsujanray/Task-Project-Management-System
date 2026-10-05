@@ -1,6 +1,6 @@
 # Task & Project Management API
 
-Express API backed by MongoDB for users, projects, and tasks.
+Express API for the Task & Project Management System.
 
 ## Run
 
@@ -12,27 +12,37 @@ $env:AUTH_SECRET="replace-with-a-long-random-secret"
 npm run dev
 ```
 
-The API uses the existing `users` database and its existing `users`, `projects`, `tasks`, `teams`, and `notifications` collections. It does not create a `task_project_management` database or collection. Set `MONGODB_DB` to your actual existing database name if `users` is the collection/database label rather than the database name.
+The server listens on `http://localhost:5000` by default. Set `PORT` to use a
+different port. The Vite client uses this URL by default; set `VITE_API_URL`
+when the API is hosted elsewhere.
 
-The API runs at `http://localhost:5000`. The Vite client uses that URL by default; set `VITE_API_URL` when MongoDB API is hosted elsewhere.
+Authentication, task endpoints, and the legacy `PATCH /api/projects/:id`
+handler retain their existing MongoDB behavior. The Sprint 12 project
+`GET`, `POST`, `PUT`, and `DELETE` handlers return temporary responses without
+accessing MongoDB.
 
 ## Backend test route
 
-Run `npm run dev` from `server/`, then request `http://localhost:5000/api/test`. This route returns a JSON confirmation and does not require a MongoDB connection.
+Request `GET http://localhost:5000/api/test` for a database-independent API
+health response.
 
-Authentication endpoints are `POST /api/auth/register`, `POST /api/auth/login`, and `GET /api/auth/profile`. Project and task endpoints require the returned bearer token.
+## Project route testing
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The project routes respond without a MongoDB connection:
 
-Currently, two official plugins are available:
+| Method | URL |
+| --- | --- |
+| GET | `http://localhost:5000/api/projects` |
+| GET | `http://localhost:5000/api/projects/101` |
+| POST | `http://localhost:5000/api/projects` |
+| PUT | `http://localhost:5000/api/projects/101` |
+| DELETE | `http://localhost:5000/api/projects/101` |
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+For POST and PUT, send JSON such as:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```json
+{
+  "name": "Website Development Project",
+  "description": "Task and project management application"
+}
+```
