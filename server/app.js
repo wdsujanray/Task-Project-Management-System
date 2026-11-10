@@ -72,28 +72,9 @@ app.get('/api/auth/profile', requireUser, async (req, res) => {
   res.json(publicUser(user));
 });
 
-app.get('/api/projects', requireUser, async (req, res) => {
-  const projects = await getDatabase().collection('projects').find({ ownerId: req.userId }).sort({ createdAt: -1 }).toArray();
-  res.json(projects.map((project) => ({ ...project, name: project.name || project.title })));
-});
-
 app.get('/api/tasks', requireUser, async (req, res) => {
   const tasks = await getDatabase().collection('tasks').find({ assignedTo: req.userId }).sort({ createdAt: -1 }).toArray();
   res.json(tasks.map((task) => ({ ...task, completed: task.completed ?? task.status === 'completed' })));
-});
-
-app.post('/api/projects', requireUser, async (req, res) => {
-  const { name, title, description, category, startDate, completionDate, attachment, status } = req.body;
-  const projectName = (name || title || '').trim();
-
-  if (!projectName) {
-    return res.status(400).json({ message: 'Project name is required' });
-  }
-
-  const newProject = { title: projectName, description: description || '', category: category || 'General', startDate: startDate || '', completionDate: completionDate || '', attachment: attachment || '', status: status || 'Planning', ownerId: req.userId, createdAt: new Date() };
-  const result = await getDatabase().collection('projects').insertOne(newProject);
-  newProject._id = result.insertedId;
-  res.status(201).json({ ...newProject, name: newProject.title });
 });
 
 app.post('/api/tasks', requireUser, async (req, res) => {
@@ -138,17 +119,6 @@ app.patch('/api/tasks/:id', requireUser, async (req, res) => {
   res.json(result);
 });
 
-app.patch('/api/projects/:id', requireUser, async (req, res) => {
-  const { id } = req.params;
-  const { name, description, category, startDate, completionDate, status } = req.body;
-  if (!ObjectId.isValid(id)) return res.status(404).json({ message: 'Project not found' });
-
-  const updates = { ...(name ? { title: name.trim() } : {}), ...(description !== undefined ? { description } : {}), ...(category ? { category } : {}), ...(startDate !== undefined ? { startDate } : {}), ...(completionDate !== undefined ? { completionDate } : {}), ...(status ? { status } : {}) };
-  const result = await getDatabase().collection('projects').findOneAndUpdate({ _id: new ObjectId(id), ownerId: req.userId }, { $set: updates }, { returnDocument: 'after' });
-  if (!result) return res.status(404).json({ message: 'Project not found' });
-  res.json({ ...result, name: result.name || result.title });
-});
-
 app.delete('/api/tasks/:id', requireUser, async (req, res) => {
   const { id } = req.params;
   const result = await getDatabase().collection('tasks').deleteOne({ _id: new ObjectId(id), assignedTo: req.userId });
@@ -157,18 +127,6 @@ app.delete('/api/tasks/:id', requireUser, async (req, res) => {
   }
 
   res.json({ message: 'Task deleted successfully' });
-});
-
-app.delete('/api/projects/:id', requireUser, async (req, res) => {
-  const { id } = req.params;
-  const projectId = new ObjectId(id);
-  const result = await getDatabase().collection('projects').deleteOne({ _id: projectId, ownerId: req.userId });
-  await getDatabase().collection('tasks').deleteMany({ projectId: projectId, assignedTo: req.userId });
-  if (!result.deletedCount) {
-    return res.status(404).json({ message: 'Project not found' });
-  }
-
-  res.json({ message: 'Project deleted successfully' });
 });
 
 app.use((req, res, next) => {

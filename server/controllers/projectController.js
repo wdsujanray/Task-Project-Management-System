@@ -65,7 +65,7 @@ function handleProjectError(res, error) {
   return res.status(500).json({ message: 'Unable to complete the project request' });
 }
 
-async function getProjects(req, res) {
+async function getAllProjects(req, res) {
   try {
     const projects = await Project.find().sort({ createdAt: -1 }).lean();
     res.json(projects.map(serializeProject));
@@ -148,7 +148,7 @@ async function deleteProject(req, res) {
 }
 
 module.exports = {
-  getProjects,
+  getAllProjects,
   getProjectById,
   createProject,
   updateProject,

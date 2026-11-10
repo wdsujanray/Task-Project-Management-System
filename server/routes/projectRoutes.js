@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-  getProjects,
+  getAllProjects,
   getProjectById,
   createProject,
   updateProject,
@@ -9,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.get('/', getProjects);
+router.get('/', getAllProjects);
 router.get('/:id', getProjectById);
 router.post('/', createProject);
 router.put('/:id', updateProject);
