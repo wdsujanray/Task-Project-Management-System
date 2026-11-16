@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import Button from "../../components/ui/Button";
-import { registerUser } from "../../services/api";
+import { registerUser } from "../../services/authService";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight, faEye, faEyeSlash, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function Register() {
   const navigate = useNavigate();
@@ -9,6 +13,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -17,18 +22,39 @@ function Register() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setError("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    if (!name || !email || !formData.password || !formData.confirmPassword) {
+      setError("Please complete all fields.");
+      return;
+    }
+    if (!emailPattern.test(email)) {
+      setError("Enter a valid email address.");
+      return;
+    }
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const { token, user } = await registerUser(formData);
-      localStorage.setItem("taskflowToken", token);
-      localStorage.setItem("taskflowUser", JSON.stringify(user));
-      localStorage.setItem("taskflowSession", JSON.stringify({ email: user.email, loggedIn: true }));
-      navigate("/profile", { replace: true });
+      await registerUser({ name, email, password: formData.password });
+      navigate("/login", {
+        replace: true,
+        state: { message: "Account created successfully. You can now log in." },
+      });
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -39,12 +65,12 @@ function Register() {
   return (
     <div className="auth-page register-page">
       <div className="auth-panel">
-        <div className="auth-icon" aria-hidden="true">+</div>
+        <div className="auth-icon" aria-hidden="true"><FontAwesomeIcon icon={faUserPlus} /></div>
         <p className="eyebrow">Start organized</p>
         <h1>Create Account</h1>
         <p>Register to manage your tasks and project workspace.</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <input
@@ -54,6 +80,7 @@ function Register() {
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter your full name"
+              autoComplete="name"
               required
             />
           </div>
@@ -67,6 +94,7 @@ function Register() {
               value={formData.email}
               onChange={handleChange}
               placeholder="name@example.com"
+              autoComplete="email"
               required
             />
           </div>
@@ -81,6 +109,8 @@ function Register() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Create a password"
+                autoComplete="new-password"
+                minLength={8}
                 required
               />
               <button
@@ -91,13 +121,30 @@ function Register() {
                 aria-pressed={showPassword}
                 title={showPassword ? "Hide password" : "Show password"}
               >
-                <span className="password-emoji" aria-hidden="true">{showPassword ? "🙈" : "👁️"}</span>
+                <FontAwesomeIcon className="password-icon" icon={showPassword ? faEyeSlash : faEye} aria-hidden="true" />
               </button>
             </div>
           </div>
 
+          <div className="form-group">
+            <label htmlFor="confirm-password">Confirm Password</label>
+            <input
+              id="confirm-password"
+              name="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Re-enter your password"
+              autoComplete="new-password"
+              required
+            />
+          </div>
+
           {error && <p className="form-error" role="alert">{error}</p>}
-          <Button type="submit" className="full-width auth-submit register-submit" disabled={isSubmitting}>{isSubmitting ? "Creating account..." : "Register"}</Button>
+          <Button type="submit" className="full-width auth-submit register-submit" disabled={isSubmitting}>
+            {isSubmitting ? "Creating account..." : "Register"}
+            <FontAwesomeIcon className="auth-submit-icon" icon={faArrowRight} aria-hidden="true" />
+          </Button>
         </form>
 
         <p className="auth-switch">

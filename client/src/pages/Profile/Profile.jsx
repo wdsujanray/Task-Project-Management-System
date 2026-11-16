@@ -1,92 +1,177 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRight,
+  faBriefcase,
+  faBuilding,
+  faCheck,
+  faDiagramProject,
+  faEnvelope,
+  faListCheck,
+  faPen,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import Card from "../../components/ui/Card";
 import PageTitle from "../../components/ui/PageTitle";
 import { getProfile, getProjects, getTasks } from "../../services/api";
-import profileCover from "../../assets/hero.png";
 
-function ProfileDetail({ icon, label, value }) {
+function readCachedUser() {
+  try {
+    return JSON.parse(localStorage.getItem("taskflowUser") || "null");
+  } catch {
+    return null;
+  }
+}
+
+function ProfileFact({ icon, label, value }) {
   return (
-    <Card>
-      <span className="profile-card-icon" aria-hidden="true">{icon}</span>
-      <h3>{label}</h3>
-      <p>{value}</p>
-    </Card>
+    <div className="my-profile-fact">
+      <span className="my-profile-fact-icon" aria-hidden="true">
+        <FontAwesomeIcon icon={icon} />
+      </span>
+      <span>
+        <small>{label}</small>
+        <strong>{value || "Not set"}</strong>
+      </span>
+    </div>
   );
 }
 
 function Profile() {
-  const [user, setUser] = useState({
-    name: "Demo User",
-    email: "demo@example.com",
-    role: "Project Manager",
-    profileImage: "",
-  });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState(readCachedUser);
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const profileDetails = [
-    { icon: "✓", label: "Full Name", value: user.name },
-    { icon: "@", label: "Email", value: user.email },
-    { icon: "★", label: "Role", value: user.role },
-    { icon: "◆", label: "Project", value: "Task & Project Management System" },
-  ];
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("taskflowToken");
-    if (!token) return;
-    Promise.all([getProfile(token), getProjects(token), getTasks(token)]).then(([profile, projectData, taskData]) => {
-      setUser(profile);
-      setProjects(projectData);
-      setTasks(taskData);
-    }).catch((error) => {
-      if ((error.message === "Authentication required" || error.message === "Invalid authentication token") && localStorage.getItem("taskflowToken") === token) {
-        localStorage.removeItem("taskflowToken");
-        localStorage.removeItem("taskflowSession");
-      }
-    });
+    if (!token) {
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    Promise.all([getProfile(token), getProjects(token), getTasks(token)])
+      .then(([profile, savedProjects, savedTasks]) => {
+        setUser(profile);
+        setProjects(savedProjects);
+        setTasks(savedTasks);
+        localStorage.setItem("taskflowUser", JSON.stringify(profile));
+        window.dispatchEvent(new Event("taskflow:user-updated"));
+      })
+      .catch((requestError) => {
+        setError(requestError.message);
+        if (["Authentication required", "Invalid authentication token"].includes(requestError.message)) {
+          localStorage.removeItem("taskflowToken");
+          localStorage.removeItem("taskflowSession");
+          localStorage.removeItem("taskflowUser");
+          navigate("/login", { replace: true });
+        }
+      })
+      .finally(() => setIsLoading(false));
+  }, [navigate]);
+
+  useEffect(() => {
+    const refreshUser = () => setUser(readCachedUser());
+    window.addEventListener("taskflow:user-updated", refreshUser);
+    return () => window.removeEventListener("taskflow:user-updated", refreshUser);
   }, []);
 
+  const completedTasks = tasks.filter((task) => task.completed).length;
+
+  if (isLoading && !user) {
+    return <div className="profile-page"><p role="status">Loading your profile...</p></div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="profile-page">
+        <PageTitle title="Profile unavailable" subtitle={error || "Your profile could not be loaded."} />
+        {error && <p className="profile-error" role="alert">{error}</p>}
+      </div>
+    );
+  }
+
   return (
-    <div className="profile-page">
-      <section className="profile-hero">
-        <div className="profile-cover" style={{ backgroundImage: `url(${profileCover})` }}>
-          {user.profileImage ? <img src={user.profileImage} alt={`${user.name} profile`} className="profile-image" /> : <div className="profile-avatar" aria-hidden="true">{user.name.charAt(0).toUpperCase()}</div>}
-        </div>
-        <div>
-          <PageTitle title={user.name} subtitle="Manage your personal workspace details and activity preferences." />
+    <div className="profile-page my-profile-page">
+      <section className="my-profile-hero">
+        <div className="my-profile-cover" aria-hidden="true" />
+        <div className="my-profile-identity">
+          <div className="my-profile-avatar">
+            {user.profileImage
+              ? <img src={user.profileImage} alt={`${user.name}'s profile`} />
+              : <span aria-hidden="true">{(user.name || "A").trim().charAt(0).toUpperCase()}</span>}
+          </div>
+          <div className="my-profile-heading">
+            <p className="eyebrow">Personal account</p>
+            <h1>Welcome, {user.name}</h1>
+            <p>Your profile and workspace at a glance.</p>
+          </div>
+          <Link className="btn my-profile-edit-button" to="/edit-profile">
+            <FontAwesomeIcon icon={faPen} aria-hidden="true" />
+            Edit profile
+          </Link>
         </div>
       </section>
 
-      <div className="profile-grid">
-        {profileDetails.map((detail) => <ProfileDetail key={detail.label} {...detail} />)}
+      {location.state?.authMessage && <p className="auth-success" role="status">{location.state.authMessage}</p>}
+      {error && <p className="profile-error" role="alert">{error}</p>}
+
+      <section className="my-profile-stat-grid" aria-label="Work summary">
+        <div className="my-profile-stat">
+          <span className="my-profile-stat-icon"><FontAwesomeIcon icon={faDiagramProject} aria-hidden="true" /></span>
+          <span><small>Projects</small><strong>{projects.length}</strong></span>
+        </div>
+        <div className="my-profile-stat">
+          <span className="my-profile-stat-icon"><FontAwesomeIcon icon={faListCheck} aria-hidden="true" /></span>
+          <span><small>Total tasks</small><strong>{tasks.length}</strong></span>
+        </div>
+        <div className="my-profile-stat">
+          <span className="my-profile-stat-icon"><FontAwesomeIcon icon={faCheck} aria-hidden="true" /></span>
+          <span><small>Completed tasks</small><strong>{completedTasks}</strong></span>
+        </div>
+      </section>
+
+      <div className="my-profile-content">
+        <Card title="Personal details" description="Your account information, visible only in your workspace.">
+          <div className="my-profile-facts">
+            <ProfileFact icon={faUser} label="Full name" value={user.name} />
+            <ProfileFact icon={faEnvelope} label="Email address" value={user.email} />
+            <ProfileFact icon={faBriefcase} label="Role" value={user.role || "Project Manager"} />
+            <ProfileFact icon={faBuilding} label="Organization" value={user.organization} />
+          </div>
+        </Card>
+
+        <Card title="Recent work" description="A quick look at the latest items in your workspace.">
+          <div className="my-profile-work-list">
+            {projects.slice(0, 3).map((project) => (
+              <div className="my-profile-work-item" key={project._id}>
+                <span className="my-profile-work-icon"><FontAwesomeIcon icon={faDiagramProject} aria-hidden="true" /></span>
+                <span><strong>{project.name}</strong><small>{project.category || "Project"}</small></span>
+                <span className="my-profile-work-status">{project.status || "Planning"}</span>
+              </div>
+            ))}
+            {tasks.slice(0, 3).map((task) => (
+              <div className="my-profile-work-item" key={task._id}>
+                <span className="my-profile-work-icon"><FontAwesomeIcon icon={faListCheck} aria-hidden="true" /></span>
+                <span><strong>{task.title || task.name}</strong><small>{task.category || "Task"}</small></span>
+                <span className="my-profile-work-status">{task.completed ? "Completed" : "In progress"}</span>
+              </div>
+            ))}
+            {!projects.length && !tasks.length && <p>No projects or tasks yet. Your workspace will show here as you add work.</p>}
+          </div>
+          <Link className="my-profile-text-link" to="/dashboard">
+            Open dashboard <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+          </Link>
+        </Card>
       </div>
 
-      <section className="profile-activity">
-        <Card title="My Projects" description={`${projects.length} saved project${projects.length === 1 ? "" : "s"}`}>
-          <ul className="dashboard-list">
-            {projects.slice(0, 5).map((project) => <li key={project._id}><span><strong>{project.name}</strong><small>{project.category || "General"}</small></span><strong>{project.status || "Planning"}</strong></li>)}
-            {!projects.length && <li><span>No saved projects yet</span></li>}
-          </ul>
-        </Card>
-        <Card title="My Tasks" description={`${tasks.length} saved task${tasks.length === 1 ? "" : "s"}`}>
-          <ul className="dashboard-list">
-            {tasks.slice(0, 5).map((task) => <li key={task._id}><span><strong>{task.title}</strong><small>{task.category || "General"}</small></span><strong>{task.completed ? "Completed" : "Active"}</strong></li>)}
-            {!tasks.length && <li><span>No saved tasks yet</span></li>}
-          </ul>
-        </Card>
-      </section>
-
-      <section className="profile-settings">
-        <div>
-          <p className="eyebrow">Workspace settings</p>
-          <h2>Stay in control</h2>
-          <p>Keep your workspace focused, secure, and ready for the next milestone.</p>
-        </div>
-        <div className="settings-list">
-          <div className="setting-row"><span><strong>Profile visibility</strong><small>Your team can find your profile</small></span><span className="status-pill">Active</span></div>
-          <div className="setting-row"><span><strong>Task reminders</strong><small>Stay ahead of upcoming work</small></span><span className="status-pill">On</span></div>
-          <div className="setting-row"><span><strong>Account security</strong><small>Your workspace is protected</small></span><span className="status-pill">Secure</span></div>
-        </div>
-      </section>
+      <div className="my-profile-footer-actions">
+        <Link className="my-profile-secondary-link" to="/dashboard">Go to dashboard</Link>
+      </div>
     </div>
   );
 }

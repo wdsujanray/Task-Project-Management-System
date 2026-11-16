@@ -1,17 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import favicon from '../../assets/images/fevico.png';
+import './index.css';
+import App from './App.jsx';
 
-import App from "./App";
-import "./styles/global.css";
-import "./styles/layout.css";
-import "./styles/components.css";
-import "./styles/responsive.css";
+const faviconLink = document.createElement('link');
+faviconLink.rel = 'icon';
+faviconLink.type = 'image/png';
+faviconLink.href = favicon;
+document.head.append(faviconLink);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>
+  </StrictMode>,
 );

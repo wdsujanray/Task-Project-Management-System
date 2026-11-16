@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import AccountMenu from "./AccountMenu";
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   const checkSession = () => {
@@ -32,7 +32,6 @@ function Navbar() {
     localStorage.removeItem("taskflowToken");
     setIsLoggedIn(false);
     setIsMenuOpen(false);
-    navigate("/", { replace: true });
   };
 
   return (
@@ -63,24 +62,27 @@ function Navbar() {
             Dashboard
           </NavLink>
           {isLoggedIn && (
+            <NavLink to="/tasks" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+              Tasks
+            </NavLink>
+          )}
+          {isLoggedIn && (
+            <NavLink to="/create-project" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+              Create Project
+            </NavLink>
+          )}
+          {isLoggedIn && (
             <NavLink to="/create-task" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
               Create Task
             </NavLink>
           )}
-          <NavLink to="/profile" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-            Profile
-          </NavLink>
           {!isLoggedIn && (
             <NavLink to="/login" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
               Login
             </NavLink>
           )}
-          {isLoggedIn && (
-            <button onClick={handleLogout} className="nav-link logout-btn">
-              Logout
-            </button>
-          )}
         </nav>
+        {isLoggedIn && <AccountMenu onLogout={handleLogout} />}
       </div>
     </header>
   );

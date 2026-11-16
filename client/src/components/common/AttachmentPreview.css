@@ -1,0 +1,197 @@
+.attachment-field {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.attachment-field > label {
+  color: var(--text-color);
+  font-weight: 650;
+}
+
+.attachment-field input[type="file"] {
+  width: 100%;
+  min-width: 0;
+  padding: 0.55rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-color);
+  color: var(--text-color);
+}
+
+.attachment-field > small {
+  color: var(--muted-text);
+  font-size: 0.8rem;
+}
+
+.attachment-field-selected {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.7rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--background-color);
+}
+
+.attachment-field-selected > span {
+  min-width: 0;
+  flex: 1 1 10rem;
+  overflow: hidden;
+  color: var(--text-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-view-button,
+.attachment-remove-button,
+.attachment-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-color);
+  color: var(--text-color);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.attachment-view-button:hover,
+.attachment-remove-button:hover,
+.attachment-modal-close:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.attachment-remove-button {
+  color: #b42318;
+}
+
+.attachment-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.68);
+}
+
+.attachment-modal {
+  display: grid;
+  width: min(100%, 900px);
+  max-height: min(90vh, 900px);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--surface-color);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+}
+
+.attachment-modal-header,
+.attachment-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+}
+
+.attachment-modal-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.attachment-modal-header h2 {
+  max-width: min(70vw, 700px);
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+  font-size: 1.1rem;
+}
+
+.attachment-modal-eyebrow {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.attachment-modal-close {
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.attachment-modal-content {
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--background-color);
+}
+
+.attachment-preview-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 68vh;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.attachment-preview-frame {
+  display: block;
+  width: 100%;
+  height: min(68vh, 680px);
+  border: 0;
+  background: #fff;
+}
+
+.attachment-preview-text {
+  max-height: 68vh;
+  overflow: auto;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-color);
+  color: var(--text-color);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.attachment-modal-footer {
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-color);
+}
+
+.attachment-modal-footer .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 520px) {
+  .attachment-modal-backdrop {
+    padding: 0.5rem;
+  }
+
+  .attachment-modal-header,
+  .attachment-modal-footer {
+    padding: 0.8rem;
+  }
+
+  .attachment-modal-footer {
+    flex-wrap: wrap;
+  }
+}

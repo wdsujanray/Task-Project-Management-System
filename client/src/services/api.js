@@ -1,6 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-async function request(path, options = {}) {
+export async function request(path, options = {}) {
   let response;
   try {
     response = await fetch(`${API_URL}${path}`, {
@@ -15,24 +15,57 @@ async function request(path, options = {}) {
   return data;
 }
 
-export function registerUser(user) {
-  return request("/auth/register", { method: "POST", body: JSON.stringify(user) });
+export function requestPasswordReset(email) {
+  return request("/auth/forgot-password", { method: "POST", body: JSON.stringify({ email }) });
 }
 
-export function loginUser(credentials) {
-  return request("/auth/login", { method: "POST", body: JSON.stringify(credentials) });
+export function resetPassword(token, password) {
+  return request("/auth/reset-password", { method: "POST", body: JSON.stringify({ token, password }) });
 }
 
 export function getProfile(token) {
   return request("/auth/profile", { headers: { Authorization: `Bearer ${token}` } });
 }
 
+export function updateProfile(token, updates) {
+  return request("/auth/profile", { method: "PATCH", headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify(updates) });
+}
+
+export function deleteAccount(token, currentPassword) {
+  return request("/auth/account", { method: "DELETE", headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify({ currentPassword }) });
+}
+
+export function updateOrganization(token, organization) {
+  return updateProfile(token, { organization });
+}
+
+export function seedDemoWorkspace(token) {
+  return request("/demo/seed", { method: "POST", headers: { Authorization: `Bearer ${token}` } });
+}
+
+export function getTeams(token) {
+  return request("/teams", { headers: { Authorization: `Bearer ${token}` } });
+}
+
+export function createTeam(token, team) {
+  return request("/teams", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify(team) });
+}
+
+export function updateTeam(token, teamId, updates) {
+  return request(`/teams/${teamId}`, { method: "PATCH", headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify(updates) });
+}
+
+export function deleteTeam(token, teamId) {
+  return request(`/teams/${teamId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+}
+
 export function getProjects(token) {
   return request("/projects", { headers: { Authorization: `Bearer ${token}` } });
 }
 
-export function getTasks(token) {
-  return request("/tasks", { headers: { Authorization: `Bearer ${token}` } });
+export function getTasks(token, projectId) {
+  const query = projectId ? `?project=${encodeURIComponent(projectId)}` : "";
+  return request(`/tasks${query}`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 export function createProject(token, project) {
@@ -57,4 +90,22 @@ export function deleteProject(token, projectId) {
 
 export function deleteTask(token, taskId) {
   return request(`/tasks/${taskId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+}
+
+export function getRecycleBinItems(token) {
+  return request("/recycle-bin", { headers: { Authorization: `Bearer ${token}` } });
+}
+
+export function restoreRecycleBinItem(token, itemId) {
+  return request(`/recycle-bin/${encodeURIComponent(itemId)}/restore`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export function permanentlyDeleteRecycleBinItem(token, itemId) {
+  return request(`/recycle-bin/${encodeURIComponent(itemId)}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }

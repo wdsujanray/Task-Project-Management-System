@@ -1,35 +1,24 @@
 # Task & Project Management System
 
-## Team Members
-- Sujan Chandra Ray
+A web application for organizing projects, tasks, deadlines, and team collaboration.
 
-## Project Domain
-Project Management
+## Technology
 
-## Project Description
-A web and mobile application for managing projects, tasks, deadlines, and team collaboration in one place.
+- Frontend: React and Vite
+- Backend: Node.js and Express
+- Database: MongoDB
 
-## Technology Stack
+## Run locally
 
-### Frontend
-- React.js
-- Tailwind CSS
+Start the backend from `server/` with `npm install` and `npm run dev`. Start
+the frontend from `client/` with `npm install` and `npm run dev`.
 
-### Backend
-- Node.js
-- Express.js
+The frontend uses `http://localhost:5000/api` by default. Set `VITE_API_URL`
+in the client environment when the API runs at a different address.
 
-### Database
-- MongoDB
+## GitHub Pages
 
-### Version Control
-- Git
-- GitHub
-
-### Development Tools
-<<<<<<< HEAD
-- Visual Studio Code
-=======
-- Visual Studio Code
-  
->>>>>>> db9af54b8974cbc01cd6c027bb639261361eb502
+The GitHub Actions workflow builds and publishes the frontend from `client/`.
+In the repository settings, set **Pages > Build and deployment > Source** to
+**GitHub Actions**. The API is not hosted by GitHub Pages; deploy the backend
+separately and set `VITE_API_URL` to its public API URL to use live data.

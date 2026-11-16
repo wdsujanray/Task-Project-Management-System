@@ -1,0 +1,34 @@
+.recovery-page {
+  width: min(100%, 520px);
+  margin-inline: auto;
+}
+
+.recovery-guidance,
+.recovery-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.recovery-guidance h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.recovery-guidance p {
+  margin: 0;
+}
+
+.recovery-guidance .btn {
+  text-decoration: none;
+}
+
+.auth-recovery-alternative {
+  margin: 1.25rem 0 0;
+  text-align: center;
+}
+
+.auth-recovery-alternative a,
+.auth-switch a {
+  color: var(--primary-color);
+  font-weight: 600;
+}
